@@ -6,6 +6,7 @@ using namespace std;
 int** wsk = nullptr;
 int liczba_kraw = 0;
 int liczba_wierzcholkow = 0;
+int obecna_liczba_krawedzi = 0;
 void MenuAbstr::menu(MenuAbstr& obj)//menu g這wne
 {
 
@@ -23,7 +24,7 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g這wne
 		cin >> x;
 		switch (x)
 		{
-		case 2: wygeneruj(10, 50);
+		case 2: wygeneruj(500, 100);
 			break;
 		case 3: wyswietlanie();
 			break;
@@ -36,9 +37,12 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g這wne
 }
 void MenuAbstr::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 {
+	liczba_kraw = 0;
+	liczba_wierzcholkow = 0;
+	obecna_liczba_krawedzi = 0;
 	liczba_wierzcholkow = liczba_wierzcholkow1;
 	wsk = new int* [liczba_wierzcholkow];
-	int obecna_liczba_krawedzi=0;
+
 	liczba_kraw = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2 * gestosc / 100;//skierowany czy nie?? dla mst NIESKIEROWANA
 	for (int i = 0; i < liczba_wierzcholkow; i++)
 	{
@@ -61,26 +65,73 @@ void MenuAbstr::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 		wsk[wybrany_wierzcholek][i - 1] = 1;
 		obecna_liczba_krawedzi++;
 	}
-	//generacja pozosta造ch 
-	for (int i = liczba_wierzcholkow; i < liczba_kraw; i++)
-	{
-		int wylosowany_wierzch1 = rand() % liczba_wierzcholkow;
-		int wylosowany_wierzch2 = rand() % liczba_wierzcholkow;
-		//sprawdzenie czy krawedz nie istnieje
-		for (int j = 0; j < obecna_liczba_krawedzi; j++)
-		{
-
-		}
-	}
-
-	//usunac wyswietlanie potem
-	for (int i = 0; i < liczba_wierzcholkow; ++i) {
-		for (int j = 0; j < liczba_kraw; ++j) {
-			printf("%3d", wsk[i][j]);
-		}
-		cout << endl;
+	for (int k = obecna_liczba_krawedzi; k < liczba_kraw; k++) {
+	generowanie_krawedzi();
 	}
 	
+
+	printf("\nWYGENEROWANO\n");
+	
+}
+void MenuAbstr::generowanie_krawedzi()
+{	//dodac sprawdzenie czy wierzcholek nie ma juz wszystkich krawedzi??
+	int wylosowany_wierzch1 = rand() % liczba_wierzcholkow;
+	//generacja i wypelnienie 0
+	int* dostepne_wierz = new int[liczba_wierzcholkow];
+	for (int i = 0; i < liczba_wierzcholkow; i++) 
+	{
+		dostepne_wierz[i]=0;
+	}
+	
+	//szukanie dostepnych wierzchohlkow 0=dostpeny
+
+	for (int i = 0; i < obecna_liczba_krawedzi;i++)
+	{
+		if (wsk[wylosowany_wierzch1][i] == 1)
+		{
+			for (int k = 0; k < liczba_wierzcholkow; k++)
+			{
+				if (wsk[k][i] == 1)
+				{
+					dostepne_wierz[k] = 1;
+				}
+			}
+		}
+	}
+	
+
+//losowanie z puli dost瘼nych
+	//liczenie ile dostepnych wierzch
+	int liczba_dostepnych = 0;
+	for (int i = 0; i < liczba_wierzcholkow; i++)
+	{
+		if (dostepne_wierz[i] == 0)
+		{
+			liczba_dostepnych++;
+		}
+	}
+	if (liczba_dostepnych == 0)return;
+	
+	int wylosowany_wierzch2 = rand() % liczba_dostepnych;
+
+	//zapisywanie wierzcho趾a do macierzy
+	int licznik = 0;
+	for (int i = 0; i < liczba_wierzcholkow; i++)
+	{
+		if (dostepne_wierz[i] == 0)
+		{
+			if (licznik == wylosowany_wierzch2)
+			{
+				wsk[wylosowany_wierzch1][obecna_liczba_krawedzi] = 1;
+				wsk[wylosowany_wierzch2][obecna_liczba_krawedzi] = 1;
+				obecna_liczba_krawedzi++;
+				
+			}
+			licznik++;
+			
+		}
+	}
+	delete[] dostepne_wierz;
 }
 
 void MenuAbstr::wyswietlanie()

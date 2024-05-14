@@ -7,4 +7,5 @@ public:
 	void menu(MenuAbstr& obj);
 	void wygeneruj(int liczba_wierzcholkow, int gestosc);
 	void wyswietlanie();
+	void generowanie_krawedzi();
 };
