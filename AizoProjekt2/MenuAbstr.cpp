@@ -24,7 +24,7 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g³owne
 		cin >> x;
 		switch (x)
 		{
-		case 2: wygeneruj(500, 100);
+		case 2: wygeneruj(5, 100);
 			break;
 		case 3: wyswietlanie();
 			break;
@@ -76,6 +76,7 @@ void MenuAbstr::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 void MenuAbstr::generowanie_krawedzi()
 {	//dodac sprawdzenie czy wierzcholek nie ma juz wszystkich krawedzi??
 	int wylosowany_wierzch1 = rand() % liczba_wierzcholkow;
+	cout << wylosowany_wierzch1 << endl;
 	//generacja i wypelnienie 0
 	int* dostepne_wierz = new int[liczba_wierzcholkow];
 	for (int i = 0; i < liczba_wierzcholkow; i++) 
