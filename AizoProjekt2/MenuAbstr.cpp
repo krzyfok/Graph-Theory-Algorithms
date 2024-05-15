@@ -24,7 +24,7 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g³owne
 		cin >> x;
 		switch (x)
 		{
-		case 2: wygeneruj(5, 100);
+		case 2: wygeneruj(5, 50);
 			break;
 		case 3: wyswietlanie();
 			break;
@@ -38,17 +38,19 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g³owne
 void MenuAbstr::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 {
 	liczba_kraw = 0;
-	liczba_wierzcholkow = 0;
 	obecna_liczba_krawedzi = 0;
 	liczba_wierzcholkow = liczba_wierzcholkow1;
+	int dostepna_liczba_krawedzi = 0;
 	wsk = new int* [liczba_wierzcholkow];
-
+	int** tab_pom = new int* [2];
 	liczba_kraw = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2 * gestosc / 100;//skierowany czy nie?? dla mst NIESKIEROWANA
+	int liczba_kraw_wszystkich = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2 ;
+	dostepna_liczba_krawedzi = liczba_kraw_wszystkich;
+	//generacja macierzy
 	for (int i = 0; i < liczba_wierzcholkow; i++)
 	{
 		wsk[i] = new int[liczba_kraw];
 	}
-
 	//wypelnienie zerami
 	for (int i = 0; i < liczba_wierzcholkow; ++i) {
 		for (int j = 0; j < liczba_kraw; ++j) {
@@ -56,6 +58,27 @@ void MenuAbstr::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 		}
 
 	}
+	//geenracja tablicy pomocniczej do losowania krawedzi
+	for (int i = 0; i < 2; i++)
+	{
+		tab_pom[i] = new int[liczba_kraw_wszystkich];
+	}
+	//generacja wszystkich mozliwych wierzcholkow
+	int indeks = 0;
+	int pom = 0;
+	for (int i = 0; i < liczba_wierzcholkow; i++)
+	{
+		
+		for (int k = pom+1; k < liczba_wierzcholkow; k++)
+		{
+			tab_pom[0][indeks] = pom;
+			tab_pom[1][indeks] = k;
+				indeks++;
+		}
+		pom++;
+	}
+
+	
 
 	//generacja spojnego
 	for (int i = 1; i < liczba_wierzcholkow; i++)
@@ -64,76 +87,71 @@ void MenuAbstr::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 		wsk[i][i - 1] = 1;
 		wsk[wybrany_wierzcholek][i - 1] = 1;
 		obecna_liczba_krawedzi++;
+		dostepna_liczba_krawedzi--;
 	}
-	for (int k = obecna_liczba_krawedzi; k < liczba_kraw; k++) {
-	generowanie_krawedzi();
+	//usuwanie wierzcholkow spojnych z tab_pom --rozpoznanie usuniêtego przez 0 0 w tabeli pom
+	for (int i = 0; i < obecna_liczba_krawedzi; i++)
+	{
+		int wierzch[2];
+		int indeks = 0;
+		for (int k = 0; k < liczba_wierzcholkow; k++)
+		{
+			if (wsk[k][i] == 1)
+			{
+				wierzch[indeks] = k;
+				indeks++;
+			}
+			
+		}
+	
+		for (int j = 0; j < liczba_kraw_wszystkich; j++)
+		{
+			if ((tab_pom[0][j] == wierzch[0] && tab_pom[1][j] == wierzch[1]) || (tab_pom[0][j] == wierzch[1] && tab_pom[1][j] == wierzch[0]))
+			{
+				
+				tab_pom[0][j] = 0;
+				tab_pom[1][j] = 0;
+			}
+		}
+
+
 	}
+
+	//losowanie wierzcholkow z tab_pom az do uzyskania zadanej gestosci
+	for (int i = obecna_liczba_krawedzi; i < liczba_kraw; i++)
+	{
+		int wylosowany_ideks = rand() % dostepna_liczba_krawedzi;
+		int indeks_dostepnych = 0;
+	
+		for (int k = 0; k < liczba_kraw_wszystkich; k++)
+		{
+		
+			if ((tab_pom[0][k] != 0) || (tab_pom[1][k] != 0))
+			{
+				
+				if (indeks_dostepnych == wylosowany_ideks)
+				{
+					wsk[tab_pom[0][k]][i] = 1;
+					wsk[tab_pom[1][k]][i] = 1;
+					tab_pom[0][k] = 0;
+					tab_pom[1][k] = 0;
+					dostepna_liczba_krawedzi--;
+					obecna_liczba_krawedzi++;
+					
+				}
+				indeks_dostepnych++;
+				
+			}
+		}
+	}
+	delete[] tab_pom;
+	
 	
 
 	printf("\nWYGENEROWANO\n");
 	
 }
-void MenuAbstr::generowanie_krawedzi()
-{	//dodac sprawdzenie czy wierzcholek nie ma juz wszystkich krawedzi??
-	int wylosowany_wierzch1 = rand() % liczba_wierzcholkow;
-	cout << wylosowany_wierzch1 << endl;
-	//generacja i wypelnienie 0
-	int* dostepne_wierz = new int[liczba_wierzcholkow];
-	for (int i = 0; i < liczba_wierzcholkow; i++) 
-	{
-		dostepne_wierz[i]=0;
-	}
-	
-	//szukanie dostepnych wierzchohlkow 0=dostpeny
 
-	for (int i = 0; i < obecna_liczba_krawedzi;i++)
-	{
-		if (wsk[wylosowany_wierzch1][i] == 1)
-		{
-			for (int k = 0; k < liczba_wierzcholkow; k++)
-			{
-				if (wsk[k][i] == 1)
-				{
-					dostepne_wierz[k] = 1;
-				}
-			}
-		}
-	}
-	
-
-//losowanie z puli dostêpnych
-	//liczenie ile dostepnych wierzch
-	int liczba_dostepnych = 0;
-	for (int i = 0; i < liczba_wierzcholkow; i++)
-	{
-		if (dostepne_wierz[i] == 0)
-		{
-			liczba_dostepnych++;
-		}
-	}
-	if (liczba_dostepnych == 0)return;
-	
-	int wylosowany_wierzch2 = rand() % liczba_dostepnych;
-
-	//zapisywanie wierzcho³ka do macierzy
-	int licznik = 0;
-	for (int i = 0; i < liczba_wierzcholkow; i++)
-	{
-		if (dostepne_wierz[i] == 0)
-		{
-			if (licznik == wylosowany_wierzch2)
-			{
-				wsk[wylosowany_wierzch1][obecna_liczba_krawedzi] = 1;
-				wsk[wylosowany_wierzch2][obecna_liczba_krawedzi] = 1;
-				obecna_liczba_krawedzi++;
-				
-			}
-			licznik++;
-			
-		}
-	}
-	delete[] dostepne_wierz;
-}
 
 void MenuAbstr::wyswietlanie()
 {
