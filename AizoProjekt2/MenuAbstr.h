@@ -11,9 +11,10 @@ public:
 	int liczba_wierzcholkow = 0;
 	int obecna_liczba_krawedzi = 0;
 	void menu(MenuAbstr& obj);
-	 virtual void wygeneruj(int liczba_wierzcholkow, int gestosc)=0;
+	 virtual void wygeneruj()=0;
 	void wyswietlanie();
-	virtual void algorytm1() = 0;
+	virtual void algorytm1v1() = 0;
+	virtual void algorytm1v2() = 0;
 	virtual void generowanie_wag() = 0;
 };
 #endif // MENUABSTR_H

@@ -6,11 +6,16 @@ using namespace std;
 
 #define inf INT_MAX
 
-void MenuMst::wygeneruj(int liczba_wierzcholkow1, int gestosc)
+void MenuMst::wygeneruj()
 {
+	int gestosc;
+	cout << "PODAJ LICZBE WIERZCHOLKOW: " ;
+	cin >> liczba_wierzcholkow;
+	cout << endl << "PODAJ GESTOSC: ";
+	cin >> gestosc;
 	liczba_kraw = 0;
 	obecna_liczba_krawedzi = 0;
-	liczba_wierzcholkow = liczba_wierzcholkow1;
+	
 	int dostepna_liczba_krawedzi = 0;
 	wsk = new int* [liczba_wierzcholkow];
 	
@@ -119,7 +124,7 @@ void MenuMst::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 	delete[] tab_pom[0];
 	delete[] tab_pom[1];
 	delete[] tab_pom;
-	
+	//tworzenie listy nastepnikow/poprzedinikow
 	
 	printf("\nWYGENEROWANO_GRAF\n");
 	generowanie_wag();
@@ -129,7 +134,7 @@ void MenuMst::generowanie_wag()
 	wagi = new int[liczba_kraw];
 	for (int i = 0; i < liczba_kraw; i++)
 	{
-		wagi[i] = rand() % 10000;
+		wagi[i] = rand() % 100;
 	}
 
 
@@ -137,16 +142,21 @@ void MenuMst::generowanie_wag()
 
 }
 
-void MenuMst::algorytm1()//dodac tabele rodzicow zeby wydrukowac wierzcholko! oraz poczatek i koniec?????
+void MenuMst::algorytm1v1()// koniec?????
 {
+	int start;
+	cout << "PODAJ WIERZCHOLEK STARTOWY:";
+	cin >> start;
+	cout << endl;
 	#define nieskon INT_MAX
 	vector<int>waga_minimalna_wierzcholka(liczba_wierzcholkow, nieskon);
+	vector<int>rodzic_wierzcholka(liczba_wierzcholkow, 0);
 	typedef pair<int, int>krawedzie;//waga , poczatek, koniec
 	priority_queue<krawedzie,vector<krawedzie>,greater<krawedzie>> kolejka;
 	vector<bool> odwiedzone(liczba_wierzcholkow, false);
 	int minimalna_waga_drzewa = 0;
-	kolejka.push({ 0,0 });
-	waga_minimalna_wierzcholka[0] = 0;
+	kolejka.push({ 0,start });
+	waga_minimalna_wierzcholka[start] = 0;
 	while (!kolejka.empty())
 	{
 		int waga = kolejka.top().first;//pobranie wierzcholka o najmnijeszej wadze
@@ -187,12 +197,19 @@ void MenuMst::algorytm1()//dodac tabele rodzicow zeby wydrukowac wierzcholko! or
 				{
 					kolejka.push({ waga_nowego,nowy_wierzcholek });
 					waga_minimalna_wierzcholka[nowy_wierzcholek] = waga_nowego;
+					rodzic_wierzcholka[nowy_wierzcholek] = wierzcholek;
 				}
 			}
 		}
 	}
 	cout <<"MINIMALNA WAGA: " << minimalna_waga_drzewa <<endl;
-
-
+	for (int i = 1; i < liczba_wierzcholkow; ++i) {
+		if (i == start) { printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[rodzic_wierzcholka[i]]); }
+		else printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[i]);
+	}
+	
+}
+void MenuMst::algorytm1v2()//lista nastepnikow/poprzednikow
+{
 	
 }

@@ -21,11 +21,12 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g³owne
 		cin >> x;
 		switch (x)
 		{
-		case 2: obj.wygeneruj(100, 100);
+		case 2: obj.wygeneruj();
 			break;
 		case 3: wyswietlanie();
 			break;
-		case 4: obj.algorytm1();
+		case 4: obj.algorytm1v1();
+			obj.algorytm1v2();
 		default:
 			break;
 		}
