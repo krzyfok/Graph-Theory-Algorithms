@@ -1,12 +1,10 @@
 #include"MenuAbstr.h"
 #include"MenuMst.h"
+#include<queue>
 using namespace std;
 
-void MenuMst::algorytm1()
-{
-	cout << "!!!" << endl;
-}
 
+#define inf INT_MAX
 
 void MenuMst::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 {
@@ -15,7 +13,7 @@ void MenuMst::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 	liczba_wierzcholkow = liczba_wierzcholkow1;
 	int dostepna_liczba_krawedzi = 0;
 	wsk = new int* [liczba_wierzcholkow];
-	wagi = new int[liczba_kraw];
+	
 	int** tab_pom = new int* [2];
 	liczba_kraw = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2 * gestosc / 100;//skierowany czy nie?? dla mst NIESKIEROWANA
 	int liczba_kraw_wszystkich = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2;
@@ -118,14 +116,83 @@ void MenuMst::wygeneruj(int liczba_wierzcholkow1, int gestosc)
 			}
 		}
 	}
+	delete[] tab_pom[0];
+	delete[] tab_pom[1];
 	delete[] tab_pom;
-	//generowanie wag
+	
+	
+	printf("\nWYGENEROWANO_GRAF\n");
+	generowanie_wag();
+}
+void MenuMst::generowanie_wag()
+{
+	wagi = new int[liczba_kraw];
 	for (int i = 0; i < liczba_kraw; i++)
 	{
-		wagi[i] = rand() % 100;
+		wagi[i] = rand() % 10000;
 	}
 
 
-	printf("\nWYGENEROWANO\n");
+	printf("\nWYGENEROWANO_WAGI\n");
 
+}
+
+void MenuMst::algorytm1()//dodac tabele rodzicow zeby wydrukowac wierzcholko! oraz poczatek i koniec?????
+{
+	#define nieskon INT_MAX
+	vector<int>waga_minimalna_wierzcholka(liczba_wierzcholkow, nieskon);
+	typedef pair<int, int>krawedzie;//waga , poczatek, koniec
+	priority_queue<krawedzie,vector<krawedzie>,greater<krawedzie>> kolejka;
+	vector<bool> odwiedzone(liczba_wierzcholkow, false);
+	int minimalna_waga_drzewa = 0;
+	kolejka.push({ 0,0 });
+	waga_minimalna_wierzcholka[0] = 0;
+	while (!kolejka.empty())
+	{
+		int waga = kolejka.top().first;//pobranie wierzcholka o najmnijeszej wadze
+		int wierzcholek = kolejka.top().second;
+		
+		kolejka.pop();
+		if (odwiedzone[wierzcholek] == true)
+		{
+			
+			continue;
+		}//sprawdzenie czy wierzcholek zosta³ odwiedzony
+		
+		minimalna_waga_drzewa = minimalna_waga_drzewa + waga;//zwiekszenia wagi mst
+		odwiedzone[wierzcholek] = true;//zaznaczenie ¿e wierzcho³ke zosta³ odwiedzony
+
+	
+		;
+		int waga_nowego;
+		int nowy_wierzcholek=-1;
+		for (int i = 0; i < liczba_kraw; i++)//przegl¹danie krawedzi wychodz¹cych z obecnego wierzchokla i dodawanie jezeli nie zosta³y jeszcze odwiedzone
+		{
+			//wsk[wierzcholke][krawedz]
+			if (wsk[wierzcholek][i] == 1)
+			{
+				for (int k = 0; k < liczba_wierzcholkow; k++)
+				{
+					if (wierzcholek != k && wsk[k][i] == 1)
+					{
+						nowy_wierzcholek = k;
+						waga_nowego = wagi[i];
+					}
+				}
+			}
+			//teraz w wierzch[] s¹ 2 wierzcholki kraawedzi ³¹czacej z pocz¹kowym wierzcholkiem
+			
+			if (nowy_wierzcholek != -1) {
+				if (odwiedzone[nowy_wierzcholek] == false && waga_minimalna_wierzcholka[nowy_wierzcholek]>waga_nowego)
+				{
+					kolejka.push({ waga_nowego,nowy_wierzcholek });
+					waga_minimalna_wierzcholka[nowy_wierzcholek] = waga_nowego;
+				}
+			}
+		}
+	}
+	cout <<"MINIMALNA WAGA: " << minimalna_waga_drzewa <<endl;
+
+
+	
 }

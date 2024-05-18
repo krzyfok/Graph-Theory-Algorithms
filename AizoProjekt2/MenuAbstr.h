@@ -14,5 +14,6 @@ public:
 	 virtual void wygeneruj(int liczba_wierzcholkow, int gestosc)=0;
 	void wyswietlanie();
 	virtual void algorytm1() = 0;
+	virtual void generowanie_wag() = 0;
 };
 #endif // MENUABSTR_H

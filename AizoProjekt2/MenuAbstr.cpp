@@ -21,7 +21,7 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g³owne
 		cin >> x;
 		switch (x)
 		{
-		case 2: obj.wygeneruj(5, 100);
+		case 2: obj.wygeneruj(100, 100);
 			break;
 		case 3: wyswietlanie();
 			break;

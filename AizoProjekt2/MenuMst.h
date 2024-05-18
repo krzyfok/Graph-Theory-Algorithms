@@ -3,5 +3,5 @@ class MenuMst : public MenuAbstr {
 
 	void algorytm1() override;
 	void wygeneruj(int liczba_wierzcholkow, int gestosc) override;
-
+	void generowanie_wag() override;
 };
