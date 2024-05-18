@@ -15,7 +15,7 @@ void MenuMst::wygeneruj()
 	cin >> gestosc;
 	liczba_kraw = 0;
 	obecna_liczba_krawedzi = 0;
-	
+	vector<vector<int>>lista_nastepnikow(liczba_wierzcholkow);
 	int dostepna_liczba_krawedzi = 0;
 	wsk = new int* [liczba_wierzcholkow];
 	
@@ -85,7 +85,8 @@ void MenuMst::wygeneruj()
 		{
 			if ((tab_pom[0][j] == wierzch[0] && tab_pom[1][j] == wierzch[1]) || (tab_pom[0][j] == wierzch[1] && tab_pom[1][j] == wierzch[0]))
 			{
-
+				lista_nastepnikow[tab_pom[0][j]].push_back(tab_pom[1][j]);
+				lista_nastepnikow[tab_pom[1][j]].push_back(tab_pom[0][j]);
 				tab_pom[0][j] = 0;
 				tab_pom[1][j] = 0;
 			}
@@ -110,11 +111,14 @@ void MenuMst::wygeneruj()
 				{
 					wsk[tab_pom[0][k]][i] = 1;
 					wsk[tab_pom[1][k]][i] = 1;
+					lista_nastepnikow[tab_pom[0][k]].push_back(tab_pom[1][k]);
+					lista_nastepnikow[tab_pom[1][k]].push_back(tab_pom[0][k]);
 					tab_pom[0][k] = 0;
 					tab_pom[1][k] = 0;
 					dostepna_liczba_krawedzi--;
 					obecna_liczba_krawedzi++;
-
+					
+				
 				}
 				indeks_dostepnych++;
 
@@ -124,8 +128,15 @@ void MenuMst::wygeneruj()
 	delete[] tab_pom[0];
 	delete[] tab_pom[1];
 	delete[] tab_pom;
-	//tworzenie listy nastepnikow/poprzedinikow
 	
+	for (size_t i = 0; i < liczba_wierzcholkow; ++i) {
+		cout << i << ": ";
+		for (size_t j = 0; j < lista_nastepnikow[i].size(); ++j) {
+			cout << lista_nastepnikow[i][j] << " ";
+		}
+		cout << std::endl;
+	}
+
 	printf("\nWYGENEROWANO_GRAF\n");
 	generowanie_wag();
 }
