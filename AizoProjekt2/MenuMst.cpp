@@ -15,7 +15,7 @@ void MenuMst::wygeneruj()
 	cin >> gestosc;
 	liczba_kraw = 0;
 	obecna_liczba_krawedzi = 0;
-	vector<vector<int>>lista_nastepnikow(liczba_wierzcholkow);
+	
 	int dostepna_liczba_krawedzi = 0;
 	wsk = new int* [liczba_wierzcholkow];
 	
@@ -23,6 +23,9 @@ void MenuMst::wygeneruj()
 	liczba_kraw = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2 * gestosc / 100;//skierowany czy nie?? dla mst NIESKIEROWANA
 	int liczba_kraw_wszystkich = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2;
 	dostepna_liczba_krawedzi = liczba_kraw_wszystkich;
+
+
+
 	//generacja macierzy
 	for (int i = 0; i < liczba_wierzcholkow; i++)
 	{
@@ -85,8 +88,7 @@ void MenuMst::wygeneruj()
 		{
 			if ((tab_pom[0][j] == wierzch[0] && tab_pom[1][j] == wierzch[1]) || (tab_pom[0][j] == wierzch[1] && tab_pom[1][j] == wierzch[0]))
 			{
-				lista_nastepnikow[tab_pom[0][j]].push_back(tab_pom[1][j]);
-				lista_nastepnikow[tab_pom[1][j]].push_back(tab_pom[0][j]);
+				
 				tab_pom[0][j] = 0;
 				tab_pom[1][j] = 0;
 			}
@@ -111,8 +113,7 @@ void MenuMst::wygeneruj()
 				{
 					wsk[tab_pom[0][k]][i] = 1;
 					wsk[tab_pom[1][k]][i] = 1;
-					lista_nastepnikow[tab_pom[0][k]].push_back(tab_pom[1][k]);
-					lista_nastepnikow[tab_pom[1][k]].push_back(tab_pom[0][k]);
+					
 					tab_pom[0][k] = 0;
 					tab_pom[1][k] = 0;
 					dostepna_liczba_krawedzi--;
@@ -129,29 +130,51 @@ void MenuMst::wygeneruj()
 	delete[] tab_pom[1];
 	delete[] tab_pom;
 	
-	for (size_t i = 0; i < liczba_wierzcholkow; ++i) {
-		cout << i << ": ";
-		for (size_t j = 0; j < lista_nastepnikow[i].size(); ++j) {
-			cout << lista_nastepnikow[i][j] << " ";
+	
+	
+	printf("\nWYGENEROWANO_GRAF\n");
+	generowanie_wag();//generacja wag
+	
+	generowanie_listy();
+	printf("\nWYGENEROWANO_LISTE\n");
+	
+}
+void MenuMst::generowanie_listy()
+{
+	int wierzch[2];
+	int indeks = 0;
+	for (int i = 0; i < liczba_kraw; i++)
+	{
+		for(int k=0;k<liczba_wierzcholkow;k++)
+		{
+			if (wsk[k][i] == 1)
+			{
+				wierzch[indeks] = k;
+			}
+			indeks++;
 		}
-		cout << std::endl;
+		indeks = 0;
+		lista_sasiedztwa[wierzch[0]].push_back(make_pair(wierzch[1], wagi[i]));//indeks,waga
+		lista_sasiedztwa[wierzch[1]].push_back(make_pair(wierzch[0], wagi[i]));
 	}
 
-	printf("\nWYGENEROWANO_GRAF\n");
-	generowanie_wag();
 }
+
+
 void MenuMst::generowanie_wag()
 {
 	wagi = new int[liczba_kraw];
 	for (int i = 0; i < liczba_kraw; i++)
 	{
-		wagi[i] = rand() % 100;
+		wagi[i] = (rand() % 100)+1;
+		
 	}
 
 
 	printf("\nWYGENEROWANO_WAGI\n");
 
 }
+
 
 void MenuMst::algorytm1v1()// koniec?????
 {
@@ -164,6 +187,7 @@ void MenuMst::algorytm1v1()// koniec?????
 	vector<int>rodzic_wierzcholka(liczba_wierzcholkow, 0);
 	typedef pair<int, int>krawedzie;//waga , poczatek, koniec
 	priority_queue<krawedzie,vector<krawedzie>,greater<krawedzie>> kolejka;
+
 	vector<bool> odwiedzone(liczba_wierzcholkow, false);
 	int minimalna_waga_drzewa = 0;
 	kolejka.push({ 0,start });
@@ -181,6 +205,7 @@ void MenuMst::algorytm1v1()// koniec?????
 		}//sprawdzenie czy wierzcholek zosta³ odwiedzony
 		
 		minimalna_waga_drzewa = minimalna_waga_drzewa + waga;//zwiekszenia wagi mst
+		
 		odwiedzone[wierzcholek] = true;//zaznaczenie ¿e wierzcho³ke zosta³ odwiedzony
 
 	
@@ -201,7 +226,7 @@ void MenuMst::algorytm1v1()// koniec?????
 					}
 				}
 			}
-			//teraz w wierzch[] s¹ 2 wierzcholki kraawedzi ³¹czacej z pocz¹kowym wierzcholkiem
+			
 			
 			if (nowy_wierzcholek != -1) {
 				if (odwiedzone[nowy_wierzcholek] == false && waga_minimalna_wierzcholka[nowy_wierzcholek]>waga_nowego)
