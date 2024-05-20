@@ -51,6 +51,16 @@ void MenuAbstr::wyswietlanie()
 		}
 		cout << endl;
 	}
+
+	for (int i = 0; i < liczba_wierzcholkow; i++)
+	{
+		cout << i << " ";
+		for (int j = 0; j < lista_sasiedztwa[i].size(); j++) {
+			
+			cout<< "(" << lista_sasiedztwa[i][j].first << ", " << lista_sasiedztwa[i][j].second << ")";
+		}
+		cout << endl;
+	}
 	
 }
 
