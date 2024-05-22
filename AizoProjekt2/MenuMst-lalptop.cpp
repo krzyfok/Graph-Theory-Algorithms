@@ -141,27 +141,21 @@ void MenuMst::wygeneruj()
 }
 void MenuMst::generowanie_listy()
 {
-	lista_sasiedztwa.clear();
-	lista_sasiedztwa.resize(liczba_wierzcholkow);
-
+	int wierzch[2];
+	int indeks = 0;
 	for (int i = 0; i < liczba_kraw; i++)
 	{
-		int wierzch[2];
-		int indeks = 0;
 		for(int k=0;k<liczba_wierzcholkow;k++)
 		{
 			if (wsk[k][i] == 1)
 			{
 				wierzch[indeks] = k;
-				
-				indeks++;
 			}
-			
+			indeks++;
 		}
-		
+		indeks = 0;
 		lista_sasiedztwa[wierzch[0]].push_back(make_pair(wierzch[1], wagi[i]));//indeks,waga
 		lista_sasiedztwa[wierzch[1]].push_back(make_pair(wierzch[0], wagi[i]));
-		
 	}
 
 }
@@ -184,12 +178,14 @@ void MenuMst::generowanie_wag()
 
 void MenuMst::algorytm1v1()// koniec?????
 {
-	int start=0;
-	
+	int start;
+	cout << "PODAJ WIERZCHOLEK STARTOWY:";
+	cin >> start;
+	cout << endl;
 	#define nieskon INT_MAX
 	vector<int>waga_minimalna_wierzcholka(liczba_wierzcholkow, nieskon);
 	vector<int>rodzic_wierzcholka(liczba_wierzcholkow, 0);
-	typedef pair<int, int>krawedzie;//waga ,koniec
+	typedef pair<int, int>krawedzie;//waga , poczatek, koniec
 	priority_queue<krawedzie,vector<krawedzie>,greater<krawedzie>> kolejka;
 
 	vector<bool> odwiedzone(liczba_wierzcholkow, false);
@@ -251,110 +247,5 @@ void MenuMst::algorytm1v1()// koniec?????
 }
 void MenuMst::algorytm1v2()//lista nastepnikow/poprzednikow
 {
-	int start=0;
 	
-	#define nieskon INT_MAX
-	vector<int>waga_minimalna_wierzcholka(liczba_wierzcholkow, nieskon);
-	vector<int>rodzic_wierzcholka(liczba_wierzcholkow, 0);
-	typedef pair<int, int>krawedzie;//waga , koniec
-	priority_queue<krawedzie, vector<krawedzie>, greater<krawedzie>> kolejka;
-
-	vector<bool> odwiedzone(liczba_wierzcholkow, false);
-	int minimalna_waga_drzewa = 0;
-	kolejka.push({ 0,start });
-	waga_minimalna_wierzcholka[start] = 0;
-	while (!kolejka.empty())
-	{
-		int waga = kolejka.top().first;//pobranie wierzcholka o najmnijeszej wadze
-		int wierzcholek = kolejka.top().second;
-
-		kolejka.pop();
-		if (odwiedzone[wierzcholek] == true)
-		{
-
-			continue;
-		}//sprawdzenie czy wierzcholek zosta³ odwiedzony
-
-		minimalna_waga_drzewa = minimalna_waga_drzewa + waga;//zwiekszenia wagi mst
-
-		odwiedzone[wierzcholek] = true;//zaznaczenie ¿e wierzcho³ke zosta³ odwiedzony
-
-
-		;
-		int waga_nowego;
-		int nowy_wierzcholek = -1;
-		for (int i = 0; i < lista_sasiedztwa[wierzcholek].size(); i++)//przegl¹danie krawedzi wychodz¹cych z obecnego wierzchokla i dodawanie jezeli nie zosta³y jeszcze odwiedzone
-		{
-			nowy_wierzcholek = lista_sasiedztwa[wierzcholek][i].first;
-			waga_nowego= lista_sasiedztwa[wierzcholek][i].second;
-
-
-			if (nowy_wierzcholek != -1) {
-				if (odwiedzone[nowy_wierzcholek] == false && waga_minimalna_wierzcholka[nowy_wierzcholek] > waga_nowego)
-				{
-					kolejka.push({ waga_nowego,nowy_wierzcholek });
-					waga_minimalna_wierzcholka[nowy_wierzcholek] = waga_nowego;
-					rodzic_wierzcholka[nowy_wierzcholek] = wierzcholek;
-				}
-			}
-		}
-	}
-	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
-	for (int i = 1; i < liczba_wierzcholkow; ++i) {
-		if (i == start) { printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[rodzic_wierzcholka[i]]); }
-		else printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[i]);
-	}
-
-
-
-}
-void MenuMst::algorytm2v1()
-{
-	int* parent = new int[liczba_wierzcholkow];
-	int* rank = new int[liczba_wierzcholkow];
-	swap(wsk[1], wsk[1]);
-	for (int i = 0; i < liczba_wierzcholkow; i++)
-	{
-		rank[i] = 0;
-	}
-	MakeSet(parent);
-	for (int i = 0; i < liczba_wierzcholkow; i++)
-	{
-		cout << parent[i] << endl;
-	}
-}
-
-void MenuMst::MakeSet(int * parent)
-{
-	for (int i = 0; i < liczba_wierzcholkow; i++)
-	{
-		parent[i] = i;
-	}
-} 
-
-int MenuMst::FindSet(int* parent,int x)
-{
-	if (parent[x] != x)
-	{
-		parent[x] = FindSet(parent, parent[x]);
-	}
-	return  parent[x];
-}
-void MenuMst::Union(int* parent,int * rank,int x,int y)
-{
-	int a = FindSet(parent, x);
-	int b = FindSet(parent, y);
-	if (rank[a] > rank[b])
-	{
-		parent[b] = a;
-	}
-	else
-	{
-		parent[a] = b;
-	}
-	if (rank[a] == rank[b])
-	{
-		rank[b] = rank[b] + 1;
-	}
-
 }
