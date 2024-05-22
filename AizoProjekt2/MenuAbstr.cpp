@@ -50,7 +50,7 @@ void MenuAbstr::wyswietlanie()
 	for (int i = 0; i < liczba_wierzcholkow; ++i) {
 		
 		for (int j = 0; j < liczba_kraw; ++j) {
-			printf("%3d", wsk[i][j]);
+			printf("%3d", wsk[j][i]);
 		}
 		cout << endl;
 	}

@@ -15,25 +15,25 @@ void MenuMst::wygeneruj()
 	cin >> gestosc;
 	liczba_kraw = 0;
 	obecna_liczba_krawedzi = 0;
-	
+	liczba_kraw = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2 * gestosc / 100;
 	int dostepna_liczba_krawedzi = 0;
-	wsk = new int* [liczba_wierzcholkow];
+	wsk = new int* [liczba_kraw];
 	
 	int** tab_pom = new int* [2];
-	liczba_kraw = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2 * gestosc / 100;//skierowany czy nie?? dla mst NIESKIEROWANA
+	
 	int liczba_kraw_wszystkich = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2;
 	dostepna_liczba_krawedzi = liczba_kraw_wszystkich;
 
 
 
 	//generacja macierzy
-	for (int i = 0; i < liczba_wierzcholkow; i++)
+	for (int i = 0; i < liczba_kraw; i++)
 	{
-		wsk[i] = new int[liczba_kraw];
+		wsk[i] = new int[liczba_wierzcholkow];
 	}
 	//wypelnienie zerami
-	for (int i = 0; i < liczba_wierzcholkow; ++i) {
-		for (int j = 0; j < liczba_kraw; ++j) {
+	for (int i = 0; i < liczba_kraw; ++i) {
+		for (int j = 0; j < liczba_wierzcholkow; ++j) {
 			wsk[i][j] = 0;
 		}
 
@@ -64,8 +64,8 @@ void MenuMst::wygeneruj()
 	for (int i = 1; i < liczba_wierzcholkow; i++)
 	{
 		int wybrany_wierzcholek = rand() % (i);
-		wsk[i][i - 1] = 1;
-		wsk[wybrany_wierzcholek][i - 1] = 1;
+		wsk[i-1][i] = 1;
+		wsk[i-1][wybrany_wierzcholek] = 1;
 		obecna_liczba_krawedzi++;
 		dostepna_liczba_krawedzi--;
 	}
@@ -76,7 +76,7 @@ void MenuMst::wygeneruj()
 		int indeks = 0;
 		for (int k = 0; k < liczba_wierzcholkow; k++)
 		{
-			if (wsk[k][i] == 1)
+			if (wsk[i][k] == 1)
 			{
 				wierzch[indeks] = k;
 				indeks++;
@@ -111,8 +111,8 @@ void MenuMst::wygeneruj()
 
 				if (indeks_dostepnych == wylosowany_ideks)
 				{
-					wsk[tab_pom[0][k]][i] = 1;
-					wsk[tab_pom[1][k]][i] = 1;
+					wsk[i][tab_pom[0][k]] = 1;
+					wsk[i][tab_pom[1][k]] = 1;
 					
 					tab_pom[0][k] = 0;
 					tab_pom[1][k] = 0;
@@ -150,7 +150,7 @@ void MenuMst::generowanie_listy()
 		int indeks = 0;
 		for(int k=0;k<liczba_wierzcholkow;k++)
 		{
-			if (wsk[k][i] == 1)
+			if (wsk[i][k] == 1)
 			{
 				wierzch[indeks] = k;
 				
@@ -219,11 +219,11 @@ void MenuMst::algorytm1v1()// koniec?????
 		for (int i = 0; i < liczba_kraw; i++)//przegl¹danie krawedzi wychodz¹cych z obecnego wierzchokla i dodawanie jezeli nie zosta³y jeszcze odwiedzone
 		{
 			//wsk[wierzcholke][krawedz]
-			if (wsk[wierzcholek][i] == 1)
+			if (wsk[i][wierzcholek] == 1)
 			{
 				for (int k = 0; k < liczba_wierzcholkow; k++)
 				{
-					if (wierzcholek != k && wsk[k][i] == 1)
+					if (wierzcholek != k && wsk[i][k] == 1)
 					{
 						nowy_wierzcholek = k;
 						waga_nowego = wagi[i];
