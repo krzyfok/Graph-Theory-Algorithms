@@ -242,12 +242,12 @@ void MenuMst::algorytm1v1()// koniec?????
 			}
 		}
 	}
-	cout <<"MINIMALNA WAGA: " << minimalna_waga_drzewa <<endl;
+	
 	for (int i = 1; i < liczba_wierzcholkow; ++i) {
 		if (i == start) { printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[rodzic_wierzcholka[i]]); }
 		else printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[i]);
 	}
-	
+	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
 }
 void MenuMst::algorytm1v2()//lista nastepnikow/poprzednikow
 {
@@ -299,30 +299,143 @@ void MenuMst::algorytm1v2()//lista nastepnikow/poprzednikow
 			}
 		}
 	}
-	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
+	
 	for (int i = 1; i < liczba_wierzcholkow; ++i) {
 		if (i == start) { printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[rodzic_wierzcholka[i]]); }
 		else printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[i]);
 	}
-
+	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
 
 
 }
 void MenuMst::algorytm2v1()
 {
+	int minimalna_waga_drzewa = 0;
 	int* parent = new int[liczba_wierzcholkow];
 	int* rank = new int[liczba_wierzcholkow];
-	swap(wsk[1], wsk[1]);
 	for (int i = 0; i < liczba_wierzcholkow; i++)
 	{
 		rank[i] = 0;
 	}
 	MakeSet(parent);
+	quick_sort_macierz(0, liczba_kraw - 1);
+	for (int i = 0; i < liczba_kraw; i++)
+	{
+		//szukanie wierzcholkow pierwszej krawdedzi w macierzy incydencji
+		int wierzch[2];
+			int indeks = 0;
+			for (int w = 0; w < liczba_wierzcholkow; w++)
+			{
+				if (wsk[i][w] == 1)
+				{
+					wierzch[indeks] = w;
+					indeks++;
+				}
+			}
+
+			//znalezione wierzcholki
+			int w1 = wierzch[0];
+			int w2 = wierzch[1];
+			int r_w1 = FindSet(parent, w1);
+			int r_w2 = FindSet(parent, w2);
+			if (r_w1 != r_w2)
+			{
+				cout << w1 << " - " << w2 <<" : "<<wagi[i] << endl;
+				minimalna_waga_drzewa = minimalna_waga_drzewa + wagi[i];
+				Union(parent, rank, r_w1, r_w2);
+			}
+	}
+	
+	
+	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
+	delete[] parent;
+	delete[] rank;
+}
+void MenuMst::algorytm2v2()
+{
+	int minimalna_waga_drzewa = 0;
+	int* parent = new int[liczba_wierzcholkow];
+	int* rank = new int[liczba_wierzcholkow];
+	
+	//tworzenie listy krawedzi
+	int** lista= new int* [liczba_kraw];
+	for (int i = 0; i < liczba_kraw; i++)
+	{
+		lista[i] = new int[3];//waga pocztek koniec//nieskierowany wiec tylko raz kazda para
+	}
+	//wypelnienie zerami
+	for (int i = 0; i < liczba_kraw; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			lista[i][j] = 0;
+		}
+
+	}
+	int indeks = 0;
+	bool znaleziono = false;
 	for (int i = 0; i < liczba_wierzcholkow; i++)
 	{
-		cout << parent[i] << endl;
+		//pobranie krwaedzi z listy sasiedztwa i sprawdzenie czy jest w liscie krawedzi
+		for (int k = 0; k < lista_sasiedztwa[i].size(); k++) {
+			int poczatek = i;
+			int koniec = lista_sasiedztwa[i][k].first;
+			for (int j = 0; j < liczba_kraw; j++)
+			{
+				if ((lista[j][1] == poczatek && lista[j][2] == koniec) || (lista[j][1] == koniec && lista[j][2] == poczatek))
+				{
+					znaleziono = true;
+					break;
+				}
+				
+			}
+			if (znaleziono == false)
+			{
+				lista[indeks][0] = lista_sasiedztwa[i][k].second;
+				lista[indeks][1] = poczatek;
+				lista[indeks][2] = koniec;
+				indeks++;
+			}
+			znaleziono = false;
+			
+		}
 	}
+	//lista utworzona
+	
+
+	for (int i = 0; i < liczba_wierzcholkow; i++)
+	{
+		rank[i] = 0;
+	}
+	MakeSet(parent);
+
+	quick_sort_lista(0, liczba_kraw - 1, lista);
+	/*
+	for (int i = 0; i < liczba_kraw; i++)
+	{
+		cout << "waga" << lista[i][0] << " " << lista[i][1] << " " << lista[i][2] << endl;
+	}*/
+	for (int i = 0; i < liczba_kraw; i++)
+	{
+	
+		int w1 = lista[i][1];
+		int w2 = lista[i][2];
+		int r_w1 = FindSet(parent, w1);
+		int r_w2 = FindSet(parent, w2);
+		if (r_w1 != r_w2)
+		{
+			cout << w1 << " - " << w2 << " : " << lista[i][0] << endl;
+			minimalna_waga_drzewa = minimalna_waga_drzewa + lista[i][0];
+			Union(parent, rank, r_w1, r_w2);
+		}
+	}
+
+
+
+	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
+	delete[] parent;
+	delete[] rank;
 }
+
+
 
 void MenuMst::MakeSet(int * parent)
 {
@@ -357,4 +470,71 @@ void MenuMst::Union(int* parent,int * rank,int x,int y)
 		rank[b] = rank[b] + 1;
 	}
 
+}
+void MenuMst::quick_sort_macierz(int poczatek, int koniec)
+{
+	if (poczatek >= koniec)
+	{
+		return;
+	}
+	int polowa = quick_sort_podzial_macierz( poczatek, koniec);
+	quick_sort_macierz( poczatek, polowa);
+	quick_sort_macierz( polowa + 1, koniec);
+}
+int MenuMst::quick_sort_podzial_macierz(int poczatek, int koniec)
+{
+
+	int pivot = wagi[poczatek];
+	int l = poczatek;
+	int r = koniec;
+	while (true)
+	{
+		while (wagi[l] < pivot)l++;
+		while (wagi[r] > pivot)r--;
+		if (r > l)
+		{
+			swap(wagi[l], wagi[r]);
+			swap(wsk[l], wsk[r]);
+			r--;
+			l++;
+		}
+		else {
+			if (r == koniec)r--;
+			return r;
+		}
+	}
+}
+
+void MenuMst::quick_sort_lista(int poczatek, int koniec,int **tab)
+{
+	if (poczatek >= koniec)
+	{
+		return;
+	}
+	int polowa = quick_sort_podzial_lista(poczatek, koniec,tab);
+	quick_sort_lista(poczatek, polowa,tab);
+	quick_sort_lista(polowa + 1, koniec,tab);
+}
+int MenuMst::quick_sort_podzial_lista(int poczatek, int koniec,int **tab)
+{
+
+	int pivot = tab[poczatek][0];
+	int l = poczatek;
+	int r = koniec;
+	while (true)
+	{
+		while (tab[l][0] < pivot)l++;
+		while (tab[r][0] > pivot)r--;
+		if (r > l)
+		{
+			swap(tab[l], tab[r]);
+			
+			r--;
+			l++;
+		}
+		else {
+			if (r == koniec)r--;
+			return r;
+		}
+	}
 }

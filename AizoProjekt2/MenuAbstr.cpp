@@ -29,6 +29,7 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g³owne
 			obj.algorytm1v2();
 			break;
 		case 5: obj.algorytm2v1();
+			obj.algorytm2v2();
 			break;
 		default:
 			break;
