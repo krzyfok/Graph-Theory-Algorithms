@@ -4,7 +4,7 @@
 using namespace std;
 
 
-#define inf INT_MAX
+//dodac wczytwanie z pliku
 
 void MenuMst::wygeneruj()
 {
@@ -167,19 +167,7 @@ void MenuMst::generowanie_listy()
 }
 
 
-void MenuMst::generowanie_wag()
-{
-	wagi = new int[liczba_kraw];
-	for (int i = 0; i < liczba_kraw; i++)
-	{
-		wagi[i] = (rand() % 100)+1;
-		
-	}
 
-
-	printf("\nWYGENEROWANO_WAGI\n");
-
-}
 
 
 void MenuMst::algorytm1v1()// koniec?????
@@ -408,11 +396,7 @@ void MenuMst::algorytm2v2()
 	MakeSet(parent);
 
 	quick_sort_lista(0, liczba_kraw - 1, lista);
-	/*
-	for (int i = 0; i < liczba_kraw; i++)
-	{
-		cout << "waga" << lista[i][0] << " " << lista[i][1] << " " << lista[i][2] << endl;
-	}*/
+
 	for (int i = 0; i < liczba_kraw; i++)
 	{
 	

@@ -22,6 +22,6 @@ public:
 	virtual void algorytm1v2() = 0;
 	virtual void algorytm2v1() = 0;
 	virtual void algorytm2v2() = 0;
-	virtual void generowanie_wag() = 0;
+	virtual void generowanie_wag();
 };
 #endif // MENUABSTR_H

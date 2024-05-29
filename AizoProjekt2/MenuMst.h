@@ -7,7 +7,7 @@ class MenuMst : public MenuAbstr {
 	void algorytm2v2()override;
 	void wygeneruj() override;
 	void generowanie_listy() override;
-	void generowanie_wag() override;
+	
 	void MakeSet(int *parent);
 	int FindSet(int* parent,int x);
 	void Union(int* parent, int* rank, int x, int y);

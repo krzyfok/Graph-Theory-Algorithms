@@ -1,6 +1,7 @@
 #include<iostream>
 #include"Menu.h"
 #include"MenuMst.h"
+#include"MenuSciezka.h"
 using namespace std;
 
 void Menu::main_menu() {
@@ -17,10 +18,22 @@ void Menu::main_menu() {
 		switch (x)
 		{
 		case 1:
+		{
 			MenuMst menu_1;
 			menu_1.menu(menu_1);
-			break;
 		}
+			break;
+		case 2:
+		{
+			MenuSciezka menu_2;
+			menu_2.menu(menu_2);
+		}
+			break;
+
+		case 3:
+			exit(0);
+		}
+
 	}
 
 

@@ -31,6 +31,8 @@ void MenuAbstr::menu(MenuAbstr& obj)//menu g³owne
 		case 5: obj.algorytm2v1();
 			obj.algorytm2v2();
 			break;
+		case 6:
+			return;
 		default:
 			break;
 		}
@@ -66,5 +68,18 @@ void MenuAbstr::wyswietlanie()
 		cout << endl;
 	}
 	
+}
+void MenuAbstr::generowanie_wag()
+{
+	wagi = new int[liczba_kraw];
+	for (int i = 0; i < liczba_kraw; i++)
+	{
+		wagi[i] = (rand() % 100) + 1;
+
+	}
+
+
+	printf("\nWYGENEROWANO_WAGI\n");
+
 }
 
