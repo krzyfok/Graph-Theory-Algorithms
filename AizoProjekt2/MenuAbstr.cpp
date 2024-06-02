@@ -1,45 +1,10 @@
 #include<iostream>
 #include"MenuAbstr.h"
-
+#include"LicznikCzasu.h"
 using namespace std;
 
 
-void MenuAbstr::menu(MenuAbstr& obj)//menu g³owne
-{
-
-	while (true)
-	{
-		printf("MENU\n");
-		printf("1.WCZYTAJ DANE Z PLIKU\n");
-		printf("2.WYGENERUJ GRAF LOSOWO\n");
-		printf("3.WYSWIETL GRAF\n");
-		printf("4.ALGORYTM 1\n");
-		printf("5.ALGORYTM 2\n");
-		printf("6.ZMIANA TYPU\n");
-
-		int x;
-		cin >> x;
-		switch (x)
-		{
-		case 2: obj.wygeneruj();
-			break;
-		case 3: wyswietlanie();
-			break;
-		case 4: obj.algorytm1v1();
-			obj.algorytm1v2();
-			break;
-		case 5: obj.algorytm2v1();
-			obj.algorytm2v2();
-			break;
-		case 6:
-			return;
-		default:
-			break;
-		}
-
-	}
-
-}
+LicznikCzasu licznik;
 
 
 

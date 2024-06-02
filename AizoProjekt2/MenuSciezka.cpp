@@ -1,6 +1,11 @@
 #include"MenuAbstr.h"
 #include"MenuSciezka.h"
 #include<queue>
+#include<iostream>
+#include<string>
+#include<fstream>
+#include<sstream>
+#include"LicznikCzasu.h"
 using namespace std;
 
 void MenuSciezka::wygeneruj()
@@ -192,14 +197,68 @@ void MenuSciezka::generowanie_listy()
 		
 	}
 }
-void MenuSciezka::algorytm1v1()
+
+void MenuSciezka::wczytywanie()
 {
+	string nazwa;
+
+	string wiersz;
+	int w1, w2, waga;
+	cout << "PODAJ NAZWE PLIKU: ";
+	cin >> nazwa;
+	ifstream plik(nazwa);
+	int i = -1;
+	if (plik.is_open())
+	{
+		while (getline(plik, wiersz, '\n'))
+		{
+			if (i == -1)
+			{
+
+				istringstream iss(wiersz);
+				iss >> liczba_kraw >> liczba_wierzcholkow;
+				wsk = new int* [liczba_kraw];
+
+				//generacja macierzy
+				for (int i = 0; i < liczba_kraw; i++)
+				{
+					wsk[i] = new int[liczba_wierzcholkow];
+				}
+				//wypelnienie zerami
+				for (int i = 0; i < liczba_kraw; ++i) {
+					for (int j = 0; j < liczba_wierzcholkow; ++j) {
+						wsk[i][j] = 0;
+					}
+
+				}
+				generowanie_wag();
+
+			}
+			else
+			{
+				istringstream iss(wiersz);
+				iss >> w1 >> w2 >> waga;
+				wagi[i] = waga;
+				wsk[i][w1] = 1;
+				wsk[i][w2] = -1;
+			}
+			i++;
+
+
+		}
+	}
+	else(cout << "BRAK PLIKU\n");
+	plik.close();
+	generowanie_listy();
+
+}
+double MenuSciezka::algorytm1v1(int w1, int w2)
+{
+	licznik.start();
 	int start = 0, koniec = 0;
 	#define nieskon INT_MAX
-	cout << "PODAJ WIERZCHOLEK STARTOWY: ";
-	cin >> start;
-	cout << endl << "PODAJ WIERZCHOLEK KONCOWY: ";
-	cin >> koniec;
+	start = w1;
+	koniec = w2;
 	vector<int>odleglosc_od_wierzcholka(liczba_wierzcholkow, nieskon);
 	vector<int>wierzcholek_poprzedzajacy(liczba_wierzcholkow, NULL);
 	typedef pair<int, int>krawedzie;//waga ,koniec
@@ -253,18 +312,221 @@ void MenuSciezka::algorytm1v1()
 		wierzch = wierzcholek_poprzedzajacy[wierzch];
 	}
 	cout << wierzch<<endl;
+	return licznik.stop();
 }
 
-void MenuSciezka::algorytm1v2()
+double MenuSciezka::algorytm1v2(int w1, int w2)
 {
+	licznik.start();
+	int start = 0, koniec = 0;
+#define nieskon INT_MAX
+	start = w1;
+	koniec = w2;
+	vector<int>odleglosc_od_wierzcholka(liczba_wierzcholkow, nieskon);
+	vector<int>wierzcholek_poprzedzajacy(liczba_wierzcholkow, NULL);
+	typedef pair<int, int>krawedzie;//waga ,koniec
+	priority_queue<krawedzie, vector<krawedzie>, greater<krawedzie>> kolejka;
 
+	vector<bool> odwiedzone(liczba_wierzcholkow, false);
+	int minimalna_waga_drzewa = 0;
+	kolejka.push({ 0,start });
+	odleglosc_od_wierzcholka[start] = 0;
+	while (!kolejka.empty())
+	{
+		//int waga = kolejka.top().first;//pobranie wierzcholka o najmnijeszej wadze
+		int wierzcholek = kolejka.top().second;
+
+		kolejka.pop();
+		int nowy_wierzcholek = -1;
+		int waga_nowego;
+		for (int i = 0; i < lista_sasiedztwa[wierzcholek].size(); i++)//przegl¹danie krawedzi wychodz¹cych z obecnego wierzchokla i dodawanie jezeli nie zosta³y jeszcze odwiedzone
+		{
+			nowy_wierzcholek = lista_sasiedztwa[wierzcholek][i].first;
+			waga_nowego = lista_sasiedztwa[wierzcholek][i].second;
+
+
+			if (nowy_wierzcholek != -1) {
+				if (odleglosc_od_wierzcholka[nowy_wierzcholek] > odleglosc_od_wierzcholka[wierzcholek] + waga_nowego)
+				{
+					odleglosc_od_wierzcholka[nowy_wierzcholek] = odleglosc_od_wierzcholka[wierzcholek] + waga_nowego;
+					kolejka.push({ odleglosc_od_wierzcholka[nowy_wierzcholek],nowy_wierzcholek });
+					wierzcholek_poprzedzajacy[nowy_wierzcholek] = wierzcholek;
+				}
+			}
+		}
+
+	}
+
+
+	printf("KOSZT SCIEZKI= %d \n", odleglosc_od_wierzcholka[koniec]);
+	int wierzch = koniec;
+	while (wierzch != start)
+	{
+		cout << wierzch << " ";
+
+		wierzch = wierzcholek_poprzedzajacy[wierzch];
+	}
+	cout << wierzch << endl;
+	return licznik.stop();
 }
-void MenuSciezka::algorytm2v1()
+double MenuSciezka::algorytm2v1(int w1, int w2)
 {
+	licznik.start();
+	int start = 0, koniec = 0;
+	#define nieskon INT_MAX
+	start = w1;
+	koniec = w2;
+	vector<int>odleglosc_od_wierzcholka(liczba_wierzcholkow, nieskon);
+	vector<int>wierzcholek_poprzedzajacy(liczba_wierzcholkow, NULL);
+	odleglosc_od_wierzcholka[start] = 0;
+	typedef pair<int, int>krawedzie;//waga ,koniec
+	for (int i = 1; i <= liczba_wierzcholkow - 1; i++)
+	{
+		for (int j = 0; j < liczba_kraw; j++)
+		{
+			int u;
+			int v;
+			int waga;
+			//szuaknie wierzcholkow krawdzie w macierzy incydencji
+			for (int w = 0; w < liczba_wierzcholkow; w++)
+			{
+				if (wsk[j][w] == 1)
+				{
+					u = w;
+				}
+				if (wsk[j][w] == -1)
+				{
+					v = w;
+				}
+			}
+			waga = wagi[j];
+			if (odleglosc_od_wierzcholka[u] != nieskon && odleglosc_od_wierzcholka[u] + waga < odleglosc_od_wierzcholka[v])
+			{
+				odleglosc_od_wierzcholka[v] = odleglosc_od_wierzcholka[u] + waga;
+				wierzcholek_poprzedzajacy[v] = u;
+			}
+			
+		}
+	}
+	
+	printf("KOSZT SCIEZKI= %d \n", odleglosc_od_wierzcholka[koniec]);
+	int wierzch = koniec;
+	while (wierzch != start)
+	{
+		cout << wierzch << " ";
 
+		wierzch = wierzcholek_poprzedzajacy[wierzch];
+	}
+	cout << wierzch << endl;
+	return licznik.stop();
 }
 
-void MenuSciezka::algorytm2v2()
+double MenuSciezka::algorytm2v2(int w1, int w2)
 {
+	licznik.start();
+	int start = 0, koniec = 0;
+	#define nieskon INT_MAX
+	start = w1;
+	koniec = w2;
+	vector<int>odleglosc_od_wierzcholka(liczba_wierzcholkow, nieskon);
+	vector<int>wierzcholek_poprzedzajacy(liczba_wierzcholkow, NULL);
+	odleglosc_od_wierzcholka[start] = 0;
+	typedef pair<int, int>krawedzie;//waga ,koniec
+	for (int i = 1; i <= liczba_wierzcholkow - 1; i++)
+	{
+		for (int j = 0; j < lista_sasiedztwa.size(); j++)
+		{
+			int u = j;
+			
+			for (int k = 0; k < lista_sasiedztwa[j].size(); k++)
+			{
+				int v = lista_sasiedztwa[j][k].first;
+				int waga = lista_sasiedztwa[j][k].second;
+				if (odleglosc_od_wierzcholka[u] != nieskon && odleglosc_od_wierzcholka[u] + waga < odleglosc_od_wierzcholka[v])
+				{
+					odleglosc_od_wierzcholka[v] = odleglosc_od_wierzcholka[u] + waga;
+					wierzcholek_poprzedzajacy[v] = u;
+				}
+			}
+		}
+
+
+
+	}
+	
+	printf("KOSZT SCIEZKI= %d \n", odleglosc_od_wierzcholka[koniec]);
+	int wierzch = koniec;
+	while (wierzch != start)
+	{
+		cout << wierzch << " ";
+
+		wierzch = wierzcholek_poprzedzajacy[wierzch];
+	}
+	cout << wierzch << endl;
+	return licznik.stop();
+}
+
+
+void MenuSciezka::menu(MenuAbstr& obj)//menu g³owne
+{
+	int start = 0, koniec = 0;
+	while (true)
+	{
+		printf("MENU\n");
+		printf("1.WCZYTAJ DANE Z PLIKU\n");
+		printf("2.WYGENERUJ GRAF LOSOWO\n");
+		printf("3.WYSWIETL GRAF\n");
+		printf("4.ALGORYTM 1\n");
+		printf("5.ALGORYTM 2\n");
+		printf("6.ZMIANA TYPU\n");
+
+		int x;
+		cin >> x;
+		switch (x)
+		{
+		case 1:
+			obj.wczytywanie();
+			break;
+		case 2: obj.wygeneruj();
+			break;
+		case 3: wyswietlanie();
+			break;
+		case 4:
+			if (wsk != nullptr) {
+				cout << "PODAJ WIERZCHOLEK STARTOWY: ";
+				cin >> start;
+				cout << endl << "PODAJ WIERZCHOLEK KONCOWY: ";
+				cin >> koniec;
+				cout << obj.algorytm1v1(start, koniec) << "milisekund" << endl;
+				cout << obj.algorytm1v2(start, koniec) << "milisekund" << endl;
+			}
+			else
+			{
+				printf("BRAK DANYCH\n");
+			}
+			break;
+		case 5:
+			if (wsk != nullptr) {
+				cout << "PODAJ WIERZCHOLEK STARTOWY: ";
+				cin >> start;
+				cout << endl << "PODAJ WIERZCHOLEK KONCOWY: ";
+				cin >> koniec;
+				cout << obj.algorytm2v1(start, koniec) << "milisekund" << endl;
+				cout << obj.algorytm2v2(start, koniec) << "milisekund" << endl;
+			}
+			else
+			{
+				printf("BRAK DANYCH\n");
+			}
+			break;
+		case 6:
+			delete[] wsk;
+			delete[] wagi;
+			return;
+		default:
+			break;
+		}
+
+	}
 
 }

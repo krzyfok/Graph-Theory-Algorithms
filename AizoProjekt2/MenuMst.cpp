@@ -1,6 +1,11 @@
 #include"MenuAbstr.h"
 #include"MenuMst.h"
 #include<queue>
+#include<iostream>
+#include<string>
+#include<fstream>
+#include<sstream>
+#include"LicznikCzasu.h"
 using namespace std;
 
 
@@ -166,14 +171,67 @@ void MenuMst::generowanie_listy()
 
 }
 
-
-
-
-
-void MenuMst::algorytm1v1()// koniec?????
+void MenuMst::wczytywanie()
 {
+	string nazwa;
+
+	string wiersz;
+	int w1, w2, waga;
+	cout << "PODAJ NAZWE PLIKU: ";
+	cin >> nazwa;
+	ifstream plik(nazwa);
+	int i = -1;
+	if (plik.is_open())
+	{
+		while (getline(plik, wiersz, '\n'))
+		{
+			if (i == -1)
+			{
+
+				istringstream iss(wiersz);
+				iss >> liczba_kraw >> liczba_wierzcholkow;
+				
+				wsk = new int* [liczba_kraw];
+
+				//generacja macierzy
+				for (int i = 0; i < liczba_kraw; i++)
+				{
+					wsk[i] = new int[liczba_wierzcholkow];
+				}
+				//wypelnienie zerami
+				for (int i = 0; i < liczba_kraw; ++i) {
+					for (int j = 0; j < liczba_wierzcholkow; ++j) {
+						wsk[i][j] = 0;
+					}
+
+				}
+				generowanie_wag();
+
+			}
+			else
+			{
+				istringstream iss(wiersz);
+				iss >> w1 >> w2 >> waga;
+				wagi[i] = waga;
+				wsk[i][w1] = 1;
+				wsk[i][w2] = 1;
+			}
+			i++;
+
+
+		}
+	}
+	else(cout << "BRAK PLIKU\n");
+	plik.close();
+	generowanie_listy();
+}
+
+
+
+double MenuMst::algorytm1v1(int w1, int w2)// koniec?????
+{
+	licznik.start();
 	int start=0;
-	
 	#define nieskon INT_MAX
 	vector<int>waga_minimalna_wierzcholka(liczba_wierzcholkow, nieskon);
 	vector<int>rodzic_wierzcholka(liczba_wierzcholkow, 0);
@@ -236,9 +294,11 @@ void MenuMst::algorytm1v1()// koniec?????
 		else printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[i]);
 	}
 	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
+	return licznik.stop();
 }
-void MenuMst::algorytm1v2()//lista nastepnikow/poprzednikow
+double MenuMst::algorytm1v2(int w1, int w2)//lista nastepnikow/poprzednikow
 {
+	licznik.start();
 	int start=0;
 	
 	#define nieskon INT_MAX
@@ -293,11 +353,12 @@ void MenuMst::algorytm1v2()//lista nastepnikow/poprzednikow
 		else printf("%d - %d : %d\n", rodzic_wierzcholka[i], i, waga_minimalna_wierzcholka[i]);
 	}
 	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
-
+	return licznik.stop();
 
 }
-void MenuMst::algorytm2v1()
+double MenuMst::algorytm2v1(int w1, int w2)
 {
+	licznik.start();
 	int minimalna_waga_drzewa = 0;
 	int* parent = new int[liczba_wierzcholkow];
 	int* rank = new int[liczba_wierzcholkow];
@@ -338,9 +399,11 @@ void MenuMst::algorytm2v1()
 	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
 	delete[] parent;
 	delete[] rank;
+	return licznik.stop();
 }
-void MenuMst::algorytm2v2()
+double MenuMst::algorytm2v2(int w1, int w2)
 {
+	licznik.start();
 	int minimalna_waga_drzewa = 0;
 	int* parent = new int[liczba_wierzcholkow];
 	int* rank = new int[liczba_wierzcholkow];
@@ -417,6 +480,7 @@ void MenuMst::algorytm2v2()
 	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
 	delete[] parent;
 	delete[] rank;
+	return licznik.stop();
 }
 
 
@@ -521,4 +585,61 @@ int MenuMst::quick_sort_podzial_lista(int poczatek, int koniec,int **tab)
 			return r;
 		}
 	}
+}
+
+void MenuMst::menu(MenuAbstr& obj)//menu g³owne
+{
+
+	while (true)
+	{
+		printf("MENU\n");
+		printf("1.WCZYTAJ DANE Z PLIKU\n");
+		printf("2.WYGENERUJ GRAF LOSOWO\n");
+		printf("3.WYSWIETL GRAF\n");
+		printf("4.ALGORYTM 1\n");
+		printf("5.ALGORYTM 2\n");
+		printf("6.ZMIANA TYPU\n");
+
+		int x;
+		cin >> x;
+		switch (x)
+		{
+		case 1:
+			wczytywanie();
+			break;
+		case 2: obj.wygeneruj();
+			break;
+		case 3: wyswietlanie();
+			break;
+		case 4:
+			if (wsk != nullptr) {
+				cout << obj.algorytm1v1(0, 0) << "milisekund" << endl;
+				cout << obj.algorytm1v2(0, 0) << "milisekund" << endl;
+			}
+			else
+			{
+				printf("BRAK DANYCH\n");
+			}
+			break;
+		case 5:
+			if (wsk != nullptr) {
+				cout << obj.algorytm2v1(0, 0) << "milisekund" << endl;
+				cout << obj.algorytm2v2(0, 0) << "milisekund" << endl;
+			}
+			else
+			{
+				printf("BRAK DANYCH\n");
+			}
+			break;
+		case 6:
+			delete[] wsk;
+			delete[] wagi;
+
+			return;
+		default:
+			break;
+		}
+
+	}
+
 }
