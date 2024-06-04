@@ -7,7 +7,6 @@ using namespace std;
 LicznikCzasu licznik;
 
 
-
 void MenuAbstr::wyswietlanie()
 {
 	for (int j = 0; j < liczba_kraw; ++j) {

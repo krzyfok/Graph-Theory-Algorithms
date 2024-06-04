@@ -5,7 +5,7 @@ class MenuMst : public MenuAbstr {
 	double algorytm1v2(int w1, int w2) override;
 	double algorytm2v1(int w1, int w2) override;
 	double algorytm2v2(int w1, int w2)override;
-	void wygeneruj() override;
+	void wygeneruj(int rozmiar, int gest) override;
 	void generowanie_listy() override;
 	void wczytywanie() override;
 	void MakeSet(int *parent);

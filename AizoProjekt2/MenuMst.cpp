@@ -11,13 +11,12 @@ using namespace std;
 
 //dodac wczytwanie z pliku
 
-void MenuMst::wygeneruj()
+void MenuMst::wygeneruj(int rozmiar, int gest)
 {
 	int gestosc;
-	cout << "PODAJ LICZBE WIERZCHOLKOW: " ;
-	cin >> liczba_wierzcholkow;
-	cout << endl << "PODAJ GESTOSC: ";
-	cin >> gestosc;
+	
+	gestosc = gest;
+	liczba_wierzcholkow = rozmiar;
 	liczba_kraw = 0;
 	obecna_liczba_krawedzi = 0;
 	liczba_kraw = (liczba_wierzcholkow * (liczba_wierzcholkow - 1)) / 2 * gestosc / 100;
@@ -607,7 +606,15 @@ void MenuMst::menu(MenuAbstr& obj)//menu g³owne
 		case 1:
 			wczytywanie();
 			break;
-		case 2: obj.wygeneruj();
+		case 2: 
+			int l, g;
+			cout << "PODAJ LICZBE WIERZCHOLKOW: ";
+			cin >> l;
+			cout << "\n";
+			cout << "PODAJ GESTOSC: ";
+			cin >> g;
+			cout << "\n";
+			obj.wygeneruj(l,g);
 			break;
 		case 3: wyswietlanie();
 			break;
