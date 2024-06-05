@@ -331,7 +331,7 @@ double MenuSciezka::algorytm1v2(int w1, int w2)
 	odleglosc_od_wierzcholka[start] = 0;
 	while (!kolejka.empty())
 	{
-		//int waga = kolejka.top().first;//pobranie wierzcholka o najmnijeszej wadze
+		
 		int wierzcholek = kolejka.top().second;
 
 		kolejka.pop();
@@ -474,8 +474,8 @@ void MenuSciezka::menu(MenuAbstr& obj)//menu g³owne
 		printf("1.WCZYTAJ DANE Z PLIKU\n");
 		printf("2.WYGENERUJ GRAF LOSOWO\n");
 		printf("3.WYSWIETL GRAF\n");
-		printf("4.ALGORYTM 1\n");
-		printf("5.ALGORYTM 2\n");
+		printf("4.ALGORYTM DIJKSTRY\n");
+		printf("5.ALGORYTM FORDA-BELLMANA\n");
 		printf("6.ZMIANA TYPU\n");
 
 		int x;

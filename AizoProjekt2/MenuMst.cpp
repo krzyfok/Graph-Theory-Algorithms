@@ -227,7 +227,7 @@ void MenuMst::wczytywanie()
 
 
 
-double MenuMst::algorytm1v1(int w1, int w2)// koniec?????
+double MenuMst::algorytm1v1(int w1, int w2)
 {
 	licznik.start();
 	int start=0;
@@ -263,7 +263,7 @@ double MenuMst::algorytm1v1(int w1, int w2)// koniec?????
 		int nowy_wierzcholek=-1;
 		for (int i = 0; i < liczba_kraw; i++)//przegl¹danie krawedzi wychodz¹cych z obecnego wierzchokla i dodawanie jezeli nie zosta³y jeszcze odwiedzone
 		{
-			//wsk[wierzcholke][krawedz]
+			
 			if (wsk[i][wierzcholek] == 1)
 			{
 				for (int k = 0; k < liczba_wierzcholkow; k++)
@@ -323,11 +323,8 @@ double MenuMst::algorytm1v2(int w1, int w2)//lista nastepnikow/poprzednikow
 		}//sprawdzenie czy wierzcholek zosta³ odwiedzony
 
 		minimalna_waga_drzewa = minimalna_waga_drzewa + waga;//zwiekszenia wagi mst
-
 		odwiedzone[wierzcholek] = true;//zaznaczenie ¿e wierzcho³ke zosta³ odwiedzony
 
-
-		;
 		int waga_nowego;
 		int nowy_wierzcholek = -1;
 		for (int i = 0; i < lista_sasiedztwa[wierzcholek].size(); i++)//przegl¹danie krawedzi wychodz¹cych z obecnego wierzchokla i dodawanie jezeli nie zosta³y jeszcze odwiedzone
@@ -369,7 +366,7 @@ double MenuMst::algorytm2v1(int w1, int w2)
 	quick_sort_macierz(0, liczba_kraw - 1);
 	for (int i = 0; i < liczba_kraw; i++)
 	{
-		//szukanie wierzcholkow pierwszej krawdedzi w macierzy incydencji
+		//szukanie wierzcholkow krawdedzi w macierzy incydencji
 		int wierzch[2];
 			int indeks = 0;
 			for (int w = 0; w < liczba_wierzcholkow; w++)
@@ -595,8 +592,8 @@ void MenuMst::menu(MenuAbstr& obj)//menu g³owne
 		printf("1.WCZYTAJ DANE Z PLIKU\n");
 		printf("2.WYGENERUJ GRAF LOSOWO\n");
 		printf("3.WYSWIETL GRAF\n");
-		printf("4.ALGORYTM 1\n");
-		printf("5.ALGORYTM 2\n");
+		printf("4.ALGORYTM PRIMA\n");
+		printf("5.ALGORYTM KRUSKALA\n");
 		printf("6.ZMIANA TYPU\n");
 
 		int x;
