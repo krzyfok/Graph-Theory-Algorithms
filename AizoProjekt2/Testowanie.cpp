@@ -43,7 +43,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas)<<endl ;
 			rozmiar = rozmiar + 25;
 		}
 
@@ -64,7 +64,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 
@@ -85,7 +85,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 		//2v2
@@ -104,7 +104,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 
@@ -128,7 +128,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 
@@ -148,7 +148,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 
@@ -168,7 +168,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 		//2v2
@@ -186,7 +186,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 
@@ -209,7 +209,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 
@@ -229,7 +229,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 
@@ -249,7 +249,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 		//2v2
@@ -267,7 +267,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 
 			}
 			czas = czas / 50;
-			plik << to_string(czas) << " milisekund\n";
+			plik << to_string(czas) << endl;
 			rozmiar = rozmiar + 25;
 		}
 

@@ -64,7 +64,7 @@ void MenuMst::wygeneruj(int rozmiar, int gest)
 
 
 
-	//generacja spojnego
+	//generacja spojnego grafu
 	for (int i = 1; i < liczba_wierzcholkow; i++)
 	{
 		int wybrany_wierzcholek = rand() % (i);
@@ -85,19 +85,16 @@ void MenuMst::wygeneruj(int rozmiar, int gest)
 				wierzch[indeks] = k;
 				indeks++;
 			}
-
 		}
 
 		for (int j = 0; j < liczba_kraw_wszystkich; j++)
 		{
 			if ((tab_pom[0][j] == wierzch[0] && tab_pom[1][j] == wierzch[1]) || (tab_pom[0][j] == wierzch[1] && tab_pom[1][j] == wierzch[0]))
 			{
-				
 				tab_pom[0][j] = 0;
 				tab_pom[1][j] = 0;
 			}
 		}
-
 
 	}
 
@@ -106,27 +103,20 @@ void MenuMst::wygeneruj(int rozmiar, int gest)
 	{
 		int wylosowany_ideks = rand() % dostepna_liczba_krawedzi;
 		int indeks_dostepnych = 0;
-
 		for (int k = 0; k < liczba_kraw_wszystkich; k++)
 		{
-
 			if ((tab_pom[0][k] != 0) || (tab_pom[1][k] != 0))
 			{
-
 				if (indeks_dostepnych == wylosowany_ideks)
 				{
 					wsk[i][tab_pom[0][k]] = 1;
 					wsk[i][tab_pom[1][k]] = 1;
-					
 					tab_pom[0][k] = 0;
 					tab_pom[1][k] = 0;
 					dostepna_liczba_krawedzi--;
-					obecna_liczba_krawedzi++;
-					
-				
+					obecna_liczba_krawedzi++;				
 				}
 				indeks_dostepnych++;
-
 			}
 		}
 	}

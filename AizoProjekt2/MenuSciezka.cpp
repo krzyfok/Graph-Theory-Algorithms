@@ -262,7 +262,7 @@ double MenuSciezka::algorytm1v1(int w1, int w2)
 	typedef pair<int, int>krawedzie;//waga ,koniec
 	priority_queue<krawedzie, vector<krawedzie>, greater<krawedzie>> kolejka;
 
-	vector<bool> odwiedzone(liczba_wierzcholkow, false);
+
 	int minimalna_waga_drzewa = 0;
 	kolejka.push({ 0,start });
 	odleglosc_od_wierzcholka[start] = 0;
@@ -325,7 +325,7 @@ double MenuSciezka::algorytm1v2(int w1, int w2)
 	typedef pair<int, int>krawedzie;//waga ,koniec
 	priority_queue<krawedzie, vector<krawedzie>, greater<krawedzie>> kolejka;
 
-	vector<bool> odwiedzone(liczba_wierzcholkow, false);
+
 	int minimalna_waga_drzewa = 0;
 	kolejka.push({ 0,start });
 	odleglosc_od_wierzcholka[start] = 0;
@@ -337,7 +337,7 @@ double MenuSciezka::algorytm1v2(int w1, int w2)
 		kolejka.pop();
 		int nowy_wierzcholek = -1;
 		int waga_nowego;
-		for (int i = 0; i < lista_sasiedztwa[wierzcholek].size(); i++)//przegl¹danie krawedzi wychodz¹cych z obecnego wierzchokla i dodawanie jezeli nie zosta³y jeszcze odwiedzone
+		for (int i = 0; i < lista_sasiedztwa[wierzcholek].size(); i++)//przegl¹danie krawedzi wychodz¹cych z obecnego wierzchokla 
 		{
 			nowy_wierzcholek = lista_sasiedztwa[wierzcholek][i].first;
 			waga_nowego = lista_sasiedztwa[wierzcholek][i].second;
