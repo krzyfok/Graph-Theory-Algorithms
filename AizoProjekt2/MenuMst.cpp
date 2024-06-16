@@ -466,6 +466,9 @@ double MenuMst::algorytm2v2(int w1, int w2)
 	cout << "MINIMALNA WAGA: " << minimalna_waga_drzewa << endl;
 	delete[] parent;
 	delete[] rank;
+	delete[] lista;
+
+
 	return licznik.stop();
 }
 

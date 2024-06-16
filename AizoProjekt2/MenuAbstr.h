@@ -25,5 +25,6 @@ public:
 	virtual double algorytm2v1(int w1,int w2) = 0;
 	virtual double algorytm2v2(int w1,int w2) = 0;
 	virtual void generowanie_wag();
+	void usuwanie() ;
 };
 #endif // MENUABSTR_H

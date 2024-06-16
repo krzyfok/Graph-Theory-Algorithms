@@ -13,6 +13,7 @@ void Menu::main_menu() {
 		printf("2.NAJKROTSZA SCIEZKA W GRAFIE\n");
 		printf("3.TESTOWANIE\n");
 		printf("4.WYJSCIE\n");
+		cout <<"! GESTOSC PODAWANA W PROCENTACH NP. GESTOSC 80%  WPISZ 80"<<endl;
 
 
 		int x;

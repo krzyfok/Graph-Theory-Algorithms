@@ -16,6 +16,7 @@ class MenuMst : public MenuAbstr {
 	void quick_sort_lista(int poczatek, int koniec,int **tab);
 	int quick_sort_podzial_lista(int poczatek, int koniec, int **tab);
 
+
 public:
 	void menu(MenuAbstr& obj) override;
 

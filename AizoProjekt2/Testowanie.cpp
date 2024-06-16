@@ -40,6 +40,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm1v1(0, (rand()%(rozmiar-1)+1));//0 jako pocz¹tkowy wierzcholek, koncowy losowy od 1 do liczba wierzcholkow - 1
+				obj.usuwanie();
 
 			}
 			czas = czas / 50;
@@ -61,7 +62,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm1v2(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -82,7 +83,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm2v1(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -101,7 +102,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm2v2(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -125,7 +126,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm1v1(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -145,7 +146,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm1v2(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -165,7 +166,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm2v1(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -183,7 +184,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm2v2(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -206,7 +207,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm1v1(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -226,7 +227,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm1v2(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -246,7 +247,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm2v1(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;
@@ -264,7 +265,7 @@ void Testowanie::szablon_testu(MenuAbstr& obj,string nazwa)
 				obj.wygeneruj(rozmiar, ge);
 
 				czas = czas + obj.algorytm2v2(0, (rand() % (rozmiar - 1) + 1));//0 jako pocz¹tkowy wierzcholek
-
+				obj.usuwanie();
 			}
 			czas = czas / 50;
 			plik << to_string(czas) << endl;

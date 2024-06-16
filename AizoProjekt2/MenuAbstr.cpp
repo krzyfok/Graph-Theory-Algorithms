@@ -43,7 +43,12 @@ void MenuAbstr::generowanie_wag()
 	}
 
 
-	printf("\nWYGENEROWANO_WAGI\n");
+}
+
+void MenuAbstr::usuwanie()
+{
+	delete[] wsk;
+	delete[] wagi;
 
 }
 
