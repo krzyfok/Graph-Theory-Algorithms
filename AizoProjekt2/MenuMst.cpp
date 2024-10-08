@@ -576,7 +576,7 @@ int MenuMst::quick_sort_podzial_lista(int poczatek, int koniec,int **tab)
 	}
 }
 
-void MenuMst::menu(MenuAbstr& obj)//menu g³owne
+void MenuMst::menu(MenuAbstr& obj)
 {
 
 	while (true)
